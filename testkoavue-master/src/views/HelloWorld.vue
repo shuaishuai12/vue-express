@@ -1,6 +1,10 @@
 <template>
-  <div class="hello">
-11111111111111111111111111
+  <div >
+      <ul v-for="(item,index) in list" :key="index">
+         <li> {{item.name}}</li>
+        <li> {{item.id}}</li>
+        <li> {{item.tel}}</li>
+      </ul>
   </div>
 </template>
 
@@ -10,27 +14,29 @@ export default {
 
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+        list:[
+          {name:'shuai啊哈哈哈'}
+        ]
+
     }
   },
   methods:{
-        test(){
-          console.log("11111111shuai");
-          axios({
-            method:"get",
-            url:'active/xianshivue'
-          })
-            .then(function (response) {
-              console.log("11111111shuai",response);
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+        test1(){
+            axios({
+              method:"get",
+              url:'active/xianshivue'
+            }).then((response) =>{
+                this.list=response.docs;
+                console.log("11111111shuai",response.docs);
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
         }
 
   },
   mounted(){
-    this.test()
+    this.test1()
   }
 }
 </script>
