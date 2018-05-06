@@ -10,7 +10,18 @@ var data =db.getModel('shuju');
 router.get('/shuai', function(req, res, next) {
   res.render('index', { title: '出现了' });
 });
+/* GET home page. */
+router.get('/doadd', function(req, res, next) {
+    console.log(req.query);
+    var uname = req.query.name;
+    var utel= req.query.tel;
+    data.create({ 							// 创建一组user对象置入model
+        name: uname,
+        tel: utel
+    });
 
+    res.send({docs:"出现了"});
+});
 
 //test
 router.get('/xianshivue',function(req, res, next) {

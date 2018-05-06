@@ -1,29 +1,31 @@
 <template>
   <div >
-      <ul v-for="(item,index) in list" :key="index">
-         <li> {{item.name}}</li>
-        <li> {{item.id}}</li>
-        <li> {{item.tel}}</li>
-      </ul>
+    name:
+    <input type="text" v-model="name" ><br>
+    tel:
+    <input type="text" v-model="tel"><br>
+    <buttom @click="add()">提交</buttom>
   </div>
 </template>
 
 <script>
-  import {findapi} from '../api/curd'
+  import {addapi} from '../api/curd'
 export default {
 
   data () {
     return {
-        list:[
-          {name:'shuai啊哈哈哈'}
-        ]
-
+        name:'',
+        tel:''
     }
   },
   methods:{
-        test1(){
-           findapi().then((response) =>{
-                this.list=response.docs;
+        add(){
+          let para ={
+            name:this.name,
+            tel:this.tel
+          }
+          addapi(para).then((response) =>{
+              //  this.list=response.docs;
                 console.log("11111111shuai",response.docs);
               })
               .catch(function (error) {
@@ -33,7 +35,7 @@ export default {
 
   },
   mounted(){
-    this.test1()
+
   }
 }
 </script>
