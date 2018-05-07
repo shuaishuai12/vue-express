@@ -6,13 +6,22 @@ import router from './router'
 import * as utils from './utils';
 
 
+//引入element
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+
 //引入vux
 import { AjaxPlugin, LoadingPlugin, ToastPlugin, ConfirmPlugin,AlertPlugin } from 'vux';
 Vue.use(AjaxPlugin);
 Vue.use(ToastPlugin);
 Vue.use(LoadingPlugin);
 Vue.use(ConfirmPlugin);
-Vue.use(AlertPlugin)
+Vue.use(AlertPlugin);
+
+
+
+
 
 Vue.config.productionTip = false
 
