@@ -42,7 +42,7 @@ router.get('/xianshivue',function(req, res, next) {
                 console.log(err)
             }
             res.send({docs:docs,array1:array1});
-            console.log("显示部分",{docs:docs,array1:array1})
+            console.log("显示部分==========>>>>",{docs:docs,array1:array1})
         })
 
 
