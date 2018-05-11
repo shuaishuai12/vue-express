@@ -15,9 +15,8 @@ mongoose.connect(DB_URL);
  * 连接成功
  */
 mongoose.connection.on('connected', function () {
-    console.log('====================');
-    console.log('数据库连接成功！ ' + DB_URL);
-    console.log('====================');
+    console.log('===================>>>>>>>数据库连接成功！ ' + DB_URL);
+
 });
 for (var m in models) {
     mongoose.model(m, new Schema(models[m]));

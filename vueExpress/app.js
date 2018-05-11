@@ -41,9 +41,9 @@ app.use(function(err, req, res, next) {
 app.set('port', process.env.PORT || 3000);
 //监听端口
 app.listen(app.get('port'), function() {
-  console.log('==============================================')
-  console.log('Express server listening on port ' + app.get('port'));
-  console.log('==============================================')
+
+  console.log('=============>>>>>Express server listening on port ' + app.get('port'));
+
 });
 
 

@@ -159,6 +159,7 @@
 		methods: {
       //test
       getlist(){
+        console.log('11111111')
           getList().then((res)=>{
               console.log(res.data.docs);
               this.users=res.data.docs

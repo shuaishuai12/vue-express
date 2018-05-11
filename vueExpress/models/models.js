@@ -28,11 +28,7 @@ module.exports = {
 		name:{type:String},
 		password:{type:String}
 	},
-	user:{
-		name:{type:String,required:true},
-		tel:{type:String,required:true}
-	},
-	xser:{
+	users:{
 		name:{type:String},
 		password:{type:String}
 	},
