@@ -1,11 +1,11 @@
 <template>
   <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm login-container">
     <h3 class="title">系统登录</h3>
-    <el-form-item prop="account">
-      <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
+    <el-form-item prop="user">
+      <el-input type="text" v-model="ruleForm2.user" auto-complete="off" placeholder="账号"></el-input>
     </el-form-item>
-    <el-form-item prop="checkPass">
-      <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off" placeholder="密码"></el-input>
+    <el-form-item prop="password">
+      <el-input type="password" v-model="ruleForm2.password" auto-complete="off" placeholder="密码"></el-input>
     </el-form-item>
     <!--<el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>-->
     <el-form-item style="width:100%;">
@@ -16,22 +16,22 @@
 </template>
 
 <script>
- import { getRegister } from '../api/test';
+ import { getLogin } from '../api/test';
   //import NProgress from 'nprogress'
   export default {
     data() {
       return {
         logining: false,
         ruleForm2: {
-          account: 'admin',
-          checkPass: '123456'
+          user: 'admin',
+          password: '123456'
         },
         rules2: {
-          account: [
+          user: [
             { required: true, message: '请输入账号', trigger: 'blur' },
             //{ validator: validaePass }
           ],
-          checkPass: [
+          password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
             //{ validator: validaePass2 }
           ]
@@ -50,10 +50,11 @@
               this.$confirm('确认提交吗？', '提示', {}).then( ()=>{
                 this.addLoading = true;
               let para = Object.assign({}, this.ruleForm2);
-              getRegister(para).then((res)=>{
-                if(res.status==200){
-                this.$router.push({ path:`/table`})
-              }
+              getLogin(para).then((res)=>{
+                console.log('11111111'+res.docs)
+               if(res.status==200){
+              this.$router.push({ path:`/table`})
+             }
             }
 
             )
