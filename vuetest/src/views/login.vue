@@ -1,5 +1,10 @@
 <template>
   <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm login-container">
+    <el-alert     :title='usertitle'
+                  type="error"
+                  center
+                  show-icon
+                  v-if="alterstatus" >  </el-alert>
     <h3 class="title">系统登录</h3>
     <el-form-item prop="user">
       <el-input type="text" v-model="ruleForm2.user" auto-complete="off" placeholder="账号"></el-input>
@@ -12,7 +17,9 @@
       <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit" :loading="logining">登录</el-button>
       <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
     </el-form-item>
+
   </el-form>
+
 </template>
 
 <script>
@@ -21,6 +28,8 @@
   export default {
     data() {
       return {
+        alterstatus:false,
+        usertitle:'',
         logining: false,
         ruleForm2: {
           user: 'admin',
@@ -50,14 +59,26 @@
               this.$confirm('确认提交吗？', '提示', {}).then( ()=>{
                 this.addLoading = true;
               let para = Object.assign({}, this.ruleForm2);
-              getLogin(para).then((res)=>{
-                console.log('11111111'+res.docs)
-               if(res.status==200){
-              this.$router.push({ path:`/table`})
+              this.$store.dispatch('login',para).then((res) =>{
+                console.log('11111111',res.data.userstatus)
+             if(res.data.userstatus===0){
+                this.$router.push({ path:`/table`})
+              }else{
+               this.alterstatus=true;
+               this.usertitle=res.data.message
              }
-            }
+              })
 
-            )
+
+
+              /* getLogin(para).then((res)=>{
+                 console.log('11111111'+res.docs)
+                if(res.status==200){
+               this.$router.push({ path:`/table`})
+              }
+             }
+
+             )*/
             })
             }})
 

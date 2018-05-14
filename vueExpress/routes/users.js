@@ -21,9 +21,10 @@ router.get('/login', function(req, res) {
         console.log("==shuju=="+docs)
         if(!docs.length){
           console.log("用户名和密码不对！")
+          res.send({'message':'用户名和密码不对','userstatus':1})
         }else{
           console.log("登录成功！！")
-          res.send({'docs':docs})
+          res.send({'message':'登录成功','userstatus':0,'user':docs})
 
 
         }

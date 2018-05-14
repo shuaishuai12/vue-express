@@ -1,6 +1,9 @@
 <template>
 	<section>
 		<!--工具条-->
+    用户名：{{ $store.state.users.username }}<br>
+    computed:{{name}}
+
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item>
@@ -106,6 +109,7 @@
 
 <script>
   import {getList,getAdd} from '../api/test'
+  import { mapState } from 'vuex'
 	//import util from '../../common/js/util'
 	//import NProgress from 'nprogress'
 	//import { getUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '../../api/api';
@@ -322,7 +326,17 @@
 		mounted() {
 		//	this.getUsers();
       this.getlist();
-		}
+		},
+    computed:mapState({
+      name: state => state.users.username
+
+    })
+   /* computed: {
+      count () {
+        return this.$store.state.users.username
+      }
+    }*/
+
 	}
 
 </script>
