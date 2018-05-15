@@ -13,6 +13,7 @@
     "array-includes": "^3.0.3",
     "axios": "^0.18.0",
     "define-properties": "^1.1.2",
+    "dropzone": "^5.4.0",
     "element-ui": "^2.3.7",
     "foreach": "^2.0.5",
     "object-keys": "^1.0.11",

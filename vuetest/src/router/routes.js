@@ -10,6 +10,10 @@ export const routes = [
     {
       path: '/register',
         component: () => import('@/views/register')
+    },
+    {
+      path: '/dropzone',
+        component: () => import('@/views/dropzone')
     }
 
 ];
