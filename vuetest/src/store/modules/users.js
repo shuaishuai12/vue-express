@@ -31,8 +31,8 @@ const actions = {
       return new Promise((resolve, reject) => {
           getLogin(data).then(res => {
           console.log("12121",res.data.user[0])
-       const data = res.data.user[0]
-        commit('SET_NAME', data.name)
+          const data = res.data.user[0]
+          commit('SET_NAME', data.name)
       //setToken(response.data.token)
       resolve(res)
     }).catch(error => {

@@ -9,8 +9,12 @@ module.exports = {
 	shuju: {
 		name:{ type: String },
 		id:{ type: String },
-		tel:{ type: String },
-		Path:{type: String }
+		birth:{type: String },
+		sex:{type: String },
+		address:{type: String },
+		age:{type: String },
+		tel:{type: String }
+
 
 	},
 	lujing: {

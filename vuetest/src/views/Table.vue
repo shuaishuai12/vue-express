@@ -10,7 +10,7 @@
 					<el-input v-model="filters.name" placeholder="姓名"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" v-on:click="getUsers">查询</el-button>
+					<el-button type="primary" v-on:click="">查询</el-button>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="handleAdd()">新增</el-button>
@@ -19,7 +19,7 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="" style="width: 100%;">
 			<el-table-column type="selection" width="55">
 			</el-table-column>
 			<el-table-column type="index" width="60">
@@ -28,11 +28,11 @@
 			</el-table-column>
 			<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex" sortable>
 			</el-table-column>
-			<el-table-column prop="tel" label="tel" width="100" sortable>
+			<el-table-column prop="age" label="年龄" width="100" sortable>
 			</el-table-column>
-			<el-table-column prop="birth" label="生日" width="120" sortable>
+			<el-table-column prop="birth" label="生日" width="120"  :formatter="formatData" sortable>
 			</el-table-column>
-			<el-table-column prop="addr" label="地址" min-width="180" sortable>
+			<el-table-column prop="address" label="地址" min-width="180" sortable>
 			</el-table-column>
 			<el-table-column label="操作" width="150">
 				<template slot-scope="scope">
@@ -50,7 +50,7 @@
 		</el-col>-->
 
 		<!--编辑界面-->
-	<!--	<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
+		<el-dialog title="编辑" :visible.sync="editFormVisible"  :close-on-click-modal="false">
 			<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="姓名" prop="name">
 					<el-input v-model="editForm.name" auto-complete="off"></el-input>
@@ -68,7 +68,7 @@
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.birth"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="地址">
-					<el-input type="textarea" v-model="editForm.addr"></el-input>
+					<el-input type="textarea" v-model="editForm.address"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -76,7 +76,7 @@
 				<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
 			</div>
 		</el-dialog>
--->
+
 		<!--新增界面-->
 		<el-dialog title="新增" :visible.sync="addFormVisible">
 			<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
@@ -96,7 +96,7 @@
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.birth"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="地址">
-					<el-input type="textarea" v-model="addForm.tel"></el-input>
+					<el-input type="textarea" v-model="addForm.address"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -108,11 +108,10 @@
 </template>
 
 <script>
-  import {getList,getAdd} from '../api/test'
+  import {getList,getAdd ,getRemove,getUpdata} from '../api/test'
   import { mapState } from 'vuex'
-	//import util from '../../common/js/util'
-	//import NProgress from 'nprogress'
-	//import { getUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '../../api/api';
+  import { dataTransform,formatDuring } from '../util/data'
+
 
 	export default {
 		data() {
@@ -139,7 +138,7 @@
 					sex: -1,
 					age: 0,
 					birth: '',
-					addr: ''
+          address: ''
 				},
 
 				addFormVisible:false,//新增界面是否显示
@@ -155,19 +154,47 @@
 					sex: -1,
 					age: 0,
 					birth: '',
-					addr: ''
+          address: ''
 				}
 
 			}
 		},
 		methods: {
+      formatData:function (cellValue) {
+        var data =parseInt(cellValue.birth)
+        return  formatDuring(data);
+      },
+
       //test
       getlist(){
-        console.log('11111111')
           getList().then((res)=>{
               console.log(res.data.docs);
               this.users=res.data.docs
           })
+      },
+      //编辑
+      editSubmit: function () {
+        this.$refs.editForm.validate((valid) => {
+          if (valid) {
+            this.$confirm('确认提交吗？', '提示', {}).then(() => {
+              this.editLoading = true;
+            let para = Object.assign({}, this.editForm);
+            para.birth = (!para.birth || para.birth == '') ? '' : dataTransform(para.birth);
+            console.log('11111111',para)
+            getUpdata(para).then((res) => {
+              console.log(res);
+            this.$message({
+              message: '提交成功',
+              type: 'success'
+            });
+            this.editLoading = false;
+            this.$refs.editForm.resetFields();
+            this.editFormVisible = false;
+            this.getlist();
+          });
+          });
+          }
+        });
       },
       addSubmit(){
           this.$refs.addForm.validate((valid) => {
@@ -175,12 +202,20 @@
               this.$confirm('确认提交吗？', '提示', {}).then( ()=>{
                 this.addLoading = true;
                 let para = Object.assign({}, this.addForm);
+                para.birth = (!para.birth || para.birth == '') ? '' : dataTransform(para.birth);
+
+                console.log('提交',para)
                 getAdd(para).then((res)=>{
+                  if(res.data.reupdata==0){
+                    this.$message({
+                      message: '提交成功',
+                      type: 'success'
+                    });
+
+                  }
+
+
                   this.addLoading = false;
-                  this.$message({
-                    message: '提交成功',
-                    type: 'success'
-                  });
                   this.$refs.addForm.resetFields();
                   this.addFormVisible = false;
                   this.getlist();
@@ -196,42 +231,33 @@
 			formatSex: function (row, column) {
 				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
 			},
-			handleCurrentChange(val) {
-				this.page = val;
-				this.getUsers();
-			},
 
-			//获取用户列表
-			getUsers() {
-				let para = {
-					page: this.page,
-					name: this.filters.name
-				};
-				this.listLoading = true;
-				//NProgress.start();
-				getUserListPage(para).then((res) => {
-					this.total = res.data.total;
-					this.users = res.data.users;
-					this.listLoading = false;
-					//NProgress.done();
-				});
-			},
 			//删除
 			handleDel: function (index, row) {
+        console.log('row',row)
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => {
+				}).then((res) => {
 					this.listLoading = true;
-					//NProgress.start();
-					let para = { id: row.id };
-					removeUser(para).then((res) => {
+					let para = { _id: row._id };
+          console.log(para)
+          getRemove(para).then((res) => {
 						this.listLoading = false;
-						//NProgress.done();
-						this.$message({
-							message: '删除成功',
-							type: 'success'
-						});
-						this.getUsers();
+            console.log(res.data.removeid)
+            if (res.data.removeid==0){
+                this.$message({
+                  message: '删除成功',
+                  type: 'success'
+                });
+            }else{
+              this.$message({
+                message: '删除失败',
+                type: 'error'
+              });
+            }
+
+
+						this.getlist();
 					});
 				}).catch(() => {
 
@@ -241,13 +267,14 @@
 			handleEdit: function (index, row) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
+        console.log('1123213',row)
 			},
 			//显示新增界面
 			handleAdd(){
 				this.addFormVisible = true;
 
-			},
-			//编辑
+			}
+		/*	//编辑
 			editSubmit: function () {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
@@ -273,7 +300,7 @@
 				});
 			},
 			//新增
-			/*addSubmit: function () {
+			/!*addSubmit: function () {
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -296,7 +323,7 @@
 						});
 					}
 				});
-			},*/
+			},*!/
 			selsChange: function (sels) {
 				this.sels = sels;
 			},
@@ -321,10 +348,10 @@
 				}).catch(() => {
 
 				});
-			}
+			}*/
 		},
 		mounted() {
-		//	this.getUsers();
+
       this.getlist();
 		},
     computed:mapState({

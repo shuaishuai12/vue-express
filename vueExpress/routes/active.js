@@ -10,20 +10,60 @@ var data =db.getModel('shuju');
 router.get('/shuai', function(req, res, next) {
   res.render('index', { title: '出现了' });
 });
-/* GET home page. */
+/* 增加 */
 router.get('/doadd', function(req, res, next) {
     console.log(req.query);
-    var uname = req.query.name;
-    var utel= req.query.tel;
+
     data.create({ 							// 创建一组user对象置入model
-        name: uname,
-        tel: utel
+        name: req.query.name,
+        tel: req.query.tel,
+        birth:req.query.birth,
+        address:req.query.address,
+        age:req.query.age,
+        sex:req.query.sex
     });
 
     res.send({docs:"出现了"});
 });
+/* 更新 */
+router.get('/doupdata', function(req, res) {
+    console.log('更新',req.query);
+    var conditions = {_id:req.query._id};
+    var updates = req.query;
+    data.update(conditions, updates,function (err,data) {
+        if(err){
+            console.log(err)
+        }else {
+            console.log(data);
+            res.send({message:"更新成功",reupdata:0});
+        }
+    });
 
-//test
+
+});
+
+/* 删除 */
+router.get('/doremove', function(req, res) {
+    //console.log('删除1111111',req.query);
+    var _id = req.query._id;
+    data.remove({ 							// 创建一组user对象置入model
+        _id:_id
+    },function (err,data) {
+        if(err){
+            console.log(err)
+        }else {
+            //console.log('删除',data)
+            res.send({message:"删除成功了",removeid:0});
+        }
+
+        
+    });
+
+
+});
+
+
+//显示
 router.get('/xianshivue',function(req, res, next) {
     var page =req.query.page||1;
     console.log(req.query);
@@ -42,7 +82,7 @@ router.get('/xianshivue',function(req, res, next) {
                 console.log(err)
             }
             res.send({docs:docs,array1:array1});
-            console.log("显示部分==========>>>>",{docs:docs,array1:array1})
+           // console.log("显示部分==========>>>>",{docs:docs,array1:array1})
         })
 
 

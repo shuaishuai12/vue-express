@@ -10,7 +10,10 @@
     //显示List
     export const getList = params => { return axios.get( `${base}/active/xianshivue`,{params:params});}
     export const getAdd = params => { return axios.get(`${base}/active/doadd`,{params:params});}
-
+    //删除
+    export const getRemove = params => { return axios.get(`${base}/active/doremove`,{params:params});}
+    //编辑
+    export const getUpdata = params => { return axios.get(`${base}/active/doupdata`,{params:params});}
 
 
    //注册
