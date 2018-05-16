@@ -14,9 +14,16 @@
     export const getRemove = params => { return axios.get(`${base}/active/doremove`,{params:params});}
     //编辑
     export const getUpdata = params => { return axios.get(`${base}/active/doupdata`,{params:params});}
+    //查询
+    export const getFind = params => { return axios.get(`${base}/active/dofind`,{params:params})}
+
 
 
    //注册
     export const getRegister = params => { return axios.get(`${base}/users/register`,{params:params});}
     //login
     export const getLogin = params => { return axios.get(`${base}/users/login`,{params:params});}
+
+
+  //图片上传
+    export const getUploadPicture = params => { return axios.get(`${base}/picture/uploadPicture`,{params:params});}

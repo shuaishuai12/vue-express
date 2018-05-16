@@ -1,8 +1,21 @@
 <template>
   <div >
 
-    <input type="file" name="file">
-    <model>111</model>
+    <form action="/api/picture/uploadPicture"
+          class="dropzone"
+          id="my-awesome-dropzone"  name="avatar" >
+
+
+    </form>
+
+
+    <form role="form" method="post" enctype="multipart/form-data" action="/api/picture/uploadPicture">
+      <input type="text" name="name">
+      <input type="text" name="id">
+      <input type="file" name="avatar">
+      <input type="submit">
+    </form>
+
 
   </div>
 </template>
@@ -10,10 +23,11 @@
 <script>
 import Dropzone from 'dropzone'
 import 'dropzone/dist/dropzone.css'
-import model from '../components/model.vue'
+import { getUploadPicture } from '../api/test'
+
 // import { getToken } from 'api/qiniu';
 
-Dropzone.autoDiscover = false
+//Dropzone.autoDiscover = false
 
 export default {
   data() {
@@ -23,9 +37,87 @@ export default {
     }
   },
   components: {
-    model: model
+
   },
-  mounted() {
+  mounted(){
+    var myDropzone = new Dropzone("div#mydropzone", { url: "/api/picture/uploadPicture"});
+    const vm = this
+    this.dropzone = new Dropzone(element, {
+      clickable: this.clickable,
+      thumbnailWidth: this.thumbnailWidth,
+      thumbnailHeight: this.thumbnailHeight,
+      maxFiles: this.maxFiles,
+      maxFilesize: this.maxFilesize,
+      dictRemoveFile: 'Remove',
+      addRemoveLinks: this.showRemoveLink,
+      acceptedFiles: this.acceptedFiles,
+      autoProcessQueue: this.autoProcessQueue,
+      dictDefaultMessage: '<i style="margin-top: 3em;display: inline-block" class="material-icons">' + this.defaultMsg + '</i><br>Drop files here to upload',
+      dictMaxFilesExceeded: '只能一个图',
+      previewTemplate: '<div class="dz-preview dz-file-preview">  <div class="dz-image" style="width:' + this.thumbnailWidth + 'px;height:' + this.thumbnailHeight + 'px" ><img style="width:' + this.thumbnailWidth + 'px;height:' + this.thumbnailHeight + 'px" data-dz-thumbnail /></div>  <div class="dz-details"><div class="dz-size"><span data-dz-size></span></div> <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>  <div class="dz-error-message"><span data-dz-errormessage></span></div>  <div class="dz-success-mark"> <i class="material-icons">done</i> </div>  <div class="dz-error-mark"><i class="material-icons">error</i></div></div>',
+      init() {
+        const val = vm.defaultImg
+        if (!val) return
+        if (Array.isArray(val)) {
+          if (val.length === 0) return
+          val.map((v, i) => {
+            const mockFile = { name: 'name' + i, size: 12345, url: v }
+            this.options.addedfile.call(this, mockFile)
+            this.options.thumbnail.call(this, mockFile, v)
+            mockFile.previewElement.classList.add('dz-success')
+            mockFile.previewElement.classList.add('dz-complete')
+            vm.initOnce = false
+            return true
+          })
+        } else {
+          const mockFile = { name: 'name', size: 12345, url: val }
+          this.options.addedfile.call(this, mockFile)
+          this.options.thumbnail.call(this, mockFile, val)
+          mockFile.previewElement.classList.add('dz-success')
+          mockFile.previewElement.classList.add('dz-complete')
+          vm.initOnce = false
+        }
+      },
+      accept: (file, done) => {
+        /!* 七牛*!/
+        // const token = this.$store.getters.token;
+        // getToken(token).then(response => {
+        //   file.token = response.data.qiniu_token;
+        //   file.key = response.data.qiniu_key;
+        //   file.url = response.data.qiniu_url;
+        //   done();
+        // })
+        done()
+      },
+      sending: (file, xhr, formData) => {
+        // formData.append('token', file.token);
+        // formData.append('key', file.key);
+        vm.initOnce = false
+      }
+    })
+
+    if (this.couldPaste) {
+      document.addEventListener('paste', this.pasteImg)
+    }
+
+    this.dropzone.on('success', file => {
+      vm.$emit('dropzone-success', file, vm.dropzone.element)
+    })
+    this.dropzone.on('addedfile', file => {
+      vm.$emit('dropzone-fileAdded', file)
+    })
+    this.dropzone.on('removedfile', file => {
+      vm.$emit('dropzone-removedFile', file)
+    })
+    this.dropzone.on('error', (file, error, xhr) => {
+      vm.$emit('dropzone-error', file, error, xhr)
+    })
+    this.dropzone.on('successmultiple', (file, error, xhr) => {
+      vm.$emit('dropzone-successmultiple', file, error, xhr)
+    })
+
+  }
+ /* mounted() {
     const element = document.getElementById(this.id)
     const vm = this
     this.dropzone = new Dropzone(element, {
@@ -65,7 +157,7 @@ export default {
         }
       },
       accept: (file, done) => {
-        /* 七牛*/
+        /!* 七牛*!/
         // const token = this.$store.getters.token;
         // getToken(token).then(response => {
         //   file.token = response.data.qiniu_token;
@@ -150,8 +242,8 @@ export default {
       this.initImages(val)
       this.initOnce = false
     }
-  },
-  props: {
+  },*/
+ /* props: {
     id: {
       type: String,
       required: true
@@ -205,7 +297,7 @@ export default {
     couldPaste: {
       default: false
     }
-  }
+  }*/
 }
 </script>
 

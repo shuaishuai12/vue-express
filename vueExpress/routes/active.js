@@ -84,14 +84,24 @@ router.get('/xianshivue',function(req, res, next) {
             res.send({docs:docs,array1:array1});
            // console.log("显示部分==========>>>>",{docs:docs,array1:array1})
         })
-
-
     })
 
 
 });
 
+router.get('/dofind',function (req,res) {
+    console.log(req.query)
+    var name = req.query.name;
+    data.find({name:name},function (err,docs) {
+        if (err){
+            condole.log(err)
+        }else{
+            console.log('查询结果',docs);
+            res.send({docs:docs})
+        }
+    })
 
+})
 
 
 module.exports = router;

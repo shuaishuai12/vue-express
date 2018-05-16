@@ -1,4 +1,8 @@
 module.exports = {
+	pictures: {
+		Path:{type: String }
+
+	},
 	tupian: {
 		name:{ type: String },
 		id:{ type: String },

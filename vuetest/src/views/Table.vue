@@ -7,10 +7,10 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item>
-					<el-input v-model="filters.name" placeholder="姓名"></el-input>
+					<el-input v-model="filters.name" placeholder="姓名" ref="findname"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" v-on:click="">查询</el-button>
+					<el-button type="primary"  @click="handleFind()">查询</el-button>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="handleAdd()">新增</el-button>
@@ -108,7 +108,7 @@
 </template>
 
 <script>
-  import {getList,getAdd ,getRemove,getUpdata} from '../api/test'
+  import {getList,getAdd ,getRemove,getUpdata, getFind} from '../api/test'
   import { mapState } from 'vuex'
   import { dataTransform,formatDuring } from '../util/data'
 
@@ -160,6 +160,16 @@
 			}
 		},
 		methods: {
+      handleFind(){
+          var name = this.$refs.findname.value;
+          var para ={name:name};
+          getFind(para).then((res)=>{
+              console.log('1111111112222222',res.data.docs);
+              this.users=res.data.docs
+          })
+         // console.log('refs',this.$refs.findname.value);
+
+      },
       formatData:function (cellValue) {
         var data =parseInt(cellValue.birth)
         return  formatDuring(data);
