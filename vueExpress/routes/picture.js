@@ -33,7 +33,7 @@ var upload = multer({ storage: storage });
         res.send({message:'ok!!!'});
     });*/
 
-router.post('/uploadPicture',upload.single('avatar'),function(req,res){
+router.post('/uploadPicture',upload.single('file'),function(req,res){
 
 
       console.log(req.file.filename);

@@ -1,20 +1,8 @@
 <template>
   <div >
 
-    <form action="/api/picture/uploadPicture"
-          class="dropzone"
-          id="my-awesome-dropzone"  name="avatar" >
+    <div id="mydropzone" class="dropzone"></div>
 
-
-    </form>
-
-
-    <form role="form" method="post" enctype="multipart/form-data" action="/api/picture/uploadPicture">
-      <input type="text" name="name">
-      <input type="text" name="id">
-      <input type="file" name="avatar">
-      <input type="submit">
-    </form>
 
 
   </div>
@@ -40,7 +28,7 @@ export default {
 
   },
   mounted(){
-    var myDropzone = new Dropzone("div#mydropzone", { url: "/api/picture/uploadPicture"});
+    var myDropzone = new Dropzone("div#mydropzone", { url: getUploadPicture.url});
     const vm = this
     this.dropzone = new Dropzone(element, {
       clickable: this.clickable,

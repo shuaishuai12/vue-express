@@ -26,4 +26,4 @@
 
 
   //图片上传
-    export const getUploadPicture = params => { return axios.get(`${base}/picture/uploadPicture`,{params:params});}
+    export const getUploadPicture ={ url:base+'/picture/uploadPicture'}
