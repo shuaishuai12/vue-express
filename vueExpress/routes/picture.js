@@ -4,13 +4,21 @@
  * Created by Administrator on 2017/11/3 0003.
  */
 var express = require('express');
-var moment = require('moment');
+
 var router = express.Router();
 var multer = require('multer');
-moment.locale('zh-cn');
-var today = {};
-var _today = moment();
-today.date = _today.format('YYYY-MM-DD HH-mm-ss'); /*现在的时间*/
+//
+//var moment = require('moment');
+//moment.locale('zh-cn');
+//var today = {};
+//var _today = moment();
+//today.date = _today.format('YYYY-MM-DD HH-mm-ss'); /*现在的时间*/
+var timestamp=new Date().getTime();
+console.log('111111111',timestamp);
+
+var newTime = new Date(timestamp).toLocaleString();
+
+
 //引入mongoose
 var mongoose=require('mongoose');
 var db=require( '../models/db' );
@@ -22,7 +30,7 @@ var storage = multer.diskStorage({
     cb(null, './public/pictureUploads')
   },
   filename: function (req, file, cb) {
-    cb(null, today.date+'-'+file.originalname)
+    cb(null, timestamp+file.originalname)
   }
 
 });
@@ -33,21 +41,64 @@ var upload = multer({ storage: storage });
         res.send({message:'ok!!!'});
     });*/
 
-router.post('/uploadPicture',upload.single('file'),function(req,res){
+
+router.get('/showPicture',function(req,res){
+    //console.log(req)
 
 
-      console.log(req.file.filename);
-      console.log(req.file.path);
-      console.log(req.file.path);
-      var file1=req.file.path;
-      data.create({ 							// 创建一组user对象置入model
-        Path:file1
-      });
+    data.find({},function (err,docs) {
+        if(err){
+            console.log(err)
+        }
+
+        res.send({"data":docs})
+
+        // console.log("显示部分==========>>>>",{docs:docs,array1:array1})
+    })
 
 
-      res.send('ok');
+
+    });
+    //删除图片
+    router.get('/deletePicture',function(req,res){
+        //console.log(req)
+
+        var _id = req.query._id;
+        console.log('删除',_id);
+        data.remove({ 				    			// 创建一组user对象置入model
+            _id:_id
+        },function (err,data) {
+            if(err){
+                console.log(err)
+            }else {
+                //console.log('删除',data)
+                res.send({message:"删除成功了",removeid:0});
+            }
+
+
+        });
+
+
+
     });
 
+
+router.post('/uploadPicture',upload.single('file'),function(req,res){
+    console.log('name',req.file.filename);
+    console.log(req.file);
+    console.log(req.file.path);
+    var file1=req.file.path;
+    data.create({ 							// 创建一组user对象置入model
+        Path:file1,
+        picId:timestamp,
+        picTime:newTime,
+        name:req.file.filename
+
+    });
+
+
+    res.send('ok');
+});
 
 module.exports = router;
 

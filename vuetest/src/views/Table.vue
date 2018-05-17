@@ -3,6 +3,7 @@
 		<!--工具条-->
     用户名：{{ $store.state.users.username }}<br>
     computed:{{name}}
+    <button @click="jump()">跳转</button>
 
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
@@ -160,6 +161,15 @@
 			}
 		},
 		methods: {
+        jump(){
+
+          this.$router.beforeEach((to, from, next) => {
+            console.log('to',to);
+            console.log('from',from)
+            next()
+          });
+          this.$router.push({ path: 'dropzone' });
+        },
       handleFind(){
           var name = this.$refs.findname.value;
           var para ={name:name};

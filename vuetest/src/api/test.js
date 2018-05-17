@@ -27,3 +27,7 @@
 
   //图片上传
     export const getUploadPicture ={ url:base+'/picture/uploadPicture'}
+  //图片显示
+    export const getShowPicture = params => { return axios.get(`${base}/picture/showPicture`,{params:params});}
+    //图片删除
+    export const getDeletePicture = params => { return axios.get(`${base}/picture/deletePicture`,{params:params});}

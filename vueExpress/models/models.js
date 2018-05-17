@@ -1,6 +1,9 @@
 module.exports = {
 	pictures: {
-		Path:{type: String }
+		Path:{type: String },
+		picId:{type: String },
+		picTime:{type: String },
+		name:{type:String}
 
 	},
 	tupian: {

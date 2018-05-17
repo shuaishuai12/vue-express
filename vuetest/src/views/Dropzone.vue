@@ -2,7 +2,10 @@
   <div >
 
     <div id="mydropzone" class="dropzone"></div>
+    <div  >
+      <img  v-for="(item,index) in picShow" :key="index" :src="item.src" alt="111" style="width:100px;height: 100px" @click="handleDelete(item)" />
 
+    </div>
 
 
   </div>
@@ -11,7 +14,7 @@
 <script>
 import Dropzone from 'dropzone'
 import 'dropzone/dist/dropzone.css'
-import { getUploadPicture } from '../api/test'
+import { getUploadPicture,getShowPicture ,getDeletePicture} from '../api/test'
 
 // import { getToken } from 'api/qiniu';
 
@@ -21,13 +24,43 @@ export default {
   data() {
     return {
       dropzone: '',
-      initOnce: true
+      initOnce: true,
+      picShow:''
     }
   },
   components: {
 
   },
+  methods: {
+      handleDelete(it){
+        var para={_id:it._id}
+        getDeletePicture(para).then((res) => {
+          console.log("删除图片",res.data)
+          if(res.data.removeid ==0){
+            this.$router.go(0)
+          }else{
+            alert('没有删除')
+          }
+        })
+      },
+      showPicture(){
+            getShowPicture().then((res)=>{
+              console.log('shuju',res.data.data)
+            this.picShow=res.data.data;
+             /*for ( var i=0;i<res.data.data.length;i++){
+               console.log(res.data.data.name[i])
+
+             }*/
+              this.picShow.forEach(item=>{item.src="http://localhost:3000/pictureUploads/"+item.name})
+
+          })
+      }
+
+
+  },
   mounted(){
+
+    this.showPicture();
     var myDropzone = new Dropzone("div#mydropzone", { url: getUploadPicture.url});
     const vm = this
     this.dropzone = new Dropzone(element, {
