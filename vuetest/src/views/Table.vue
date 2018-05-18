@@ -1,8 +1,8 @@
 <template>
 	<section>
 		<!--工具条-->
-    用户名：{{ $store.state.users.username }}<br>
-    computed:{{username}}
+
+    用户名称:{{username}}
     <button @click="jump()">跳转</button>
 
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
@@ -42,6 +42,17 @@
 				</template>
 			</el-table-column>
 		</el-table>
+    <div v-show="paginationVisible">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :page-sizes="[5, 8, 10]"
+      :page-size="pageSize"
+      :current-page="currentPage"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="totalNum">
+    </el-pagination>
+    </div>
 
 		<!--工具条-->
 		<!--<el-col :span="24" class="toolbar">
@@ -117,6 +128,14 @@
 	export default {
 		data() {
 			return {
+        //fenye
+        pageSize:5,
+        totalNum:100,
+        currentPage:1,
+        paginationVisible:true,
+
+
+
 				filters: {
 					name: ''
 				},
@@ -161,6 +180,33 @@
 			}
 		},
 		methods: {
+     //分页操作
+        handleSizeChange(val) {
+          console.log(`每页 ${val} 条`);
+          this.pageSize=val
+          var para={pageSize:val};
+          getList(para).then((res)=>{
+            console.log('docs',res.data);
+            this.users=res.data.docs;
+            this.totalNum=res.data.array1.zongshu
+          })
+
+        },
+        handleCurrentChange(val) {
+          console.log(`当前页: ${val}`);
+          var para={pageSize:this.pageSize,currentPage:val};
+          getList(para).then((res)=>{
+            console.log('docs',res.data);
+            this.users=res.data.docs;
+            this.totalNum=res.data.array1.zongshu
+          })
+        },
+      //
+
+
+
+
+
         jump(){
 
           this.$router.beforeEach((to, from, next) => {
@@ -171,6 +217,7 @@
           this.$router.push({ path: 'dropzone' });
         },
       handleFind(){
+          this.paginationVisible=false;
           var name = this.$refs.findname.value;
           var para ={name:name};
           getFind(para).then((res)=>{
@@ -188,8 +235,9 @@
       //test
       getlist(){
           getList().then((res)=>{
-              console.log(res.data.docs);
-              this.users=res.data.docs
+              console.log('docs',res.data);
+              this.users=res.data.docs;
+              this.totalNum=res.data.array1.zongshu
           })
       },
       //编辑

@@ -65,9 +65,11 @@ router.get('/doremove', function(req, res) {
 
 //显示
 router.get('/xianshivue',function(req, res, next) {
-    var page =req.query.page||1;
+
+    var page =Number(req.query.currentPage)||1;
     console.log(req.query);
-    var pagesize=Number(req.query.pagesize);
+    console.log(page);
+    var pagesize=Number(req.query.pageSize)||5;
     data.count({}).exec(function (err,count1) {
         if(err){
             console.log(err)
