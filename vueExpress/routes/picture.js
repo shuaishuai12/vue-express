@@ -13,9 +13,10 @@ var multer = require('multer');
 //var today = {};
 //var _today = moment();
 //today.date = _today.format('YYYY-MM-DD HH-mm-ss'); /*现在的时间*/
+//毫秒时间
 var timestamp=new Date().getTime();
-console.log('111111111',timestamp);
 
+//毫秒转化
 var newTime = new Date(timestamp).toLocaleString();
 
 

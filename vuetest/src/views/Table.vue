@@ -2,7 +2,7 @@
 	<section>
 		<!--工具条-->
     用户名：{{ $store.state.users.username }}<br>
-    computed:{{name}}
+    computed:{{username}}
     <button @click="jump()">跳转</button>
 
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
@@ -374,10 +374,15 @@
 
       this.getlist();
 		},
-    computed:mapState({
-      name: state => state.users.username
+    computed:{
+      //读取缓存 ，不要使用箭头函数
+     /* username: () => this.$cookie.get('username')*/
+      username () {
+        return this.$cookie.get('username');
+      }
+    }
 
-    })
+
    /* computed: {
       count () {
         return this.$store.state.users.username

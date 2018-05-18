@@ -62,6 +62,8 @@
               this.$store.dispatch('login',para).then((res) =>{
                 console.log('11111111',res.data.userstatus)
              if(res.data.userstatus===0){
+
+
                 this.$router.push({ path:`/table`})
               }else{
                this.alterstatus=true;
