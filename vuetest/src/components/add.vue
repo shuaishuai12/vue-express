@@ -55,6 +55,7 @@
 
       }},
       props:{
+
         addFormvisible:{
             type:Boolean,
             default:false
@@ -63,6 +64,7 @@
           type:String,
           default:''
         }
+
       },
     methods:{
       cancel(){

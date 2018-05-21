@@ -38,7 +38,7 @@
 			</el-table-column>
 			<el-table-column label="操作" width="150">
 				<template slot-scope="scope">
-					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+					<el-button size="small" @click="handleEdit1(scope.$index, scope.row)">编辑</el-button>
 					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
@@ -364,10 +364,15 @@
 			},
 			//显示编辑界面
 			handleEdit: function (index, row) {
-				this.editFormVisible = true;
-				this.editForm = Object.assign({}, row);
+        this.addFormVisible = true;
+        this.editForm = Object.assign({}, row);
         console.log('1123213',row)
-			},
+      },
+      handleEdit1: function (index, row) {
+        this.editFormVisible = true;
+        this.editForm = Object.assign({}, row);
+        console.log('1123213',row)
+      },
 			//显示新增界面
 			handleAdd(){
         this.title='填写增加页面'
