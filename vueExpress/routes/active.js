@@ -23,7 +23,7 @@ router.get('/doadd', function(req, res, next) {
         sex:req.query.sex
     });
 
-    res.send({docs:"出现了"});
+    res.send({message:"更新成功",reupdata:0});
 });
 /* 更新 */
 router.get('/doupdata', function(req, res) {

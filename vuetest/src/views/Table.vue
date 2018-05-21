@@ -16,6 +16,7 @@
 				<el-form-item>
 					<el-button type="primary" @click="handleAdd()">新增</el-button>
 				</el-form-item>
+
 			</el-form>
 		</el-col>
 
@@ -89,8 +90,16 @@
 			</div>
 		</el-dialog>
 
+    <new-add
+      :add-formvisible.sync="addFormVisible"
+      :title="title"
+      v-on:sumbit="tijiao"
+    >111</new-add>
+
+   <!-- <test :test.sync="Visible1" ref="child1" ></test>-->
+
 		<!--新增界面-->
-		<el-dialog title="新增" :visible.sync="addFormVisible">
+	<!--	<el-dialog title="新增" :visible.sync="addFormVisible">
 			<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="姓名" prop="name">
 					<el-input v-model="addForm.name" auto-complete="off"></el-input>
@@ -115,7 +124,7 @@
 				<el-button @click.native="addFormVisible = false">取消</el-button>
 				<el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
 			</div>
-		</el-dialog>
+		</el-dialog>-->
 	</section>
 </template>
 
@@ -123,11 +132,16 @@
   import {getList,getAdd ,getRemove,getUpdata, getFind} from '../api/test'
   import { mapState } from 'vuex'
   import { dataTransform,formatDuring } from '../util/data'
+  import model1 from '../components/add.vue'
+  import test from '../components/model.vue'
+
 
 
 	export default {
 		data() {
 			return {
+        title:'',
+        Visible1:false,
         //fenye
         pageSize:5,
         totalNum:100,
@@ -179,7 +193,24 @@
 
 			}
 		},
+    components:{
+        'new-add':model1,
+        'test':test
+    },
 		methods: {
+      tijiao(data){
+        getAdd(data).then((res)=>{
+          console.log(res);
+          this.addFormVisible=false;
+            if(res.data.reupdata==0) {
+              this.$message({
+                message: '提交成功',
+                type: 'success'
+              });
+            }})
+
+
+      },
      //分页操作
         handleSizeChange(val) {
           console.log(`每页 ${val} 条`);
@@ -339,9 +370,20 @@
 			},
 			//显示新增界面
 			handleAdd(){
+        this.title='填写增加页面'
 				this.addFormVisible = true;
 
-			}
+			},
+      handleAdd1(){
+        this.Visible1 = true;
+
+      },
+      handleAdd2(){
+        this.$refs.child1.shuai()
+
+
+      }
+
 		/*	//编辑
 			editSubmit: function () {
 				this.$refs.editForm.validate((valid) => {
