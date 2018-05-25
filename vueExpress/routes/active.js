@@ -67,7 +67,7 @@ router.get('/doremove', function(req, res) {
 router.get('/xianshivue',function(req, res, next) {
 
     var page =Number(req.query.currentPage)||1;
-    console.log(req.query);
+    console.log(new Date(),req.query);
     console.log(page);
     var pagesize=Number(req.query.pageSize)||5;
     data.count({}).exec(function (err,count1) {
