@@ -6,6 +6,10 @@
       <img  v-for="(item,index) in picShow" :key="index" :src="item.src" alt="111" style="width:100px;height: 100px" @click="handleDelete(item)" />
 
     </div>
+    <div  >
+      <img  v-for="(item,index) in pig" :key="index" :src="item.src" alt="111" style="width:100px;height: 100px" @click="handleDelete(item)" />
+
+    </div>
 
 
   </div>
@@ -25,7 +29,8 @@ export default {
     return {
       dropzone: '',
       initOnce: true,
-      picShow:''
+      picShow:'',
+      pig:''
     }
   },
   components: {
@@ -51,7 +56,16 @@ export default {
                console.log(res.data.data.name[i])
 
              }*/
-              this.picShow.forEach(item=>{item.src="http://localhost:3000/pictureUploads/"+item.name})
+              this.picShow.forEach(item=>{item.src="http://localhost:3000/pictureUploads/"+item.name});
+            let map1 = res.data.data;
+            let shuai1 = map1.map( item =>{
+                let shuai ={};
+                shuai.src="http://localhost:3000/pictureUploads/"+item.name;
+                return shuai
+
+            })
+            console.log(shuai1)
+            this.pig=shuai1
 
           })
       }
