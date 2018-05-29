@@ -10,7 +10,7 @@
       <img  v-for="(item,index) in pig" :key="index" :src="item.src" alt="111" style="width:100px;height: 100px" @click="handleDelete(item)" />
 
     </div>
-
+    
 
   </div>
 </template>
@@ -19,6 +19,7 @@
 import Dropzone from 'dropzone'
 import 'dropzone/dist/dropzone.css'
 import { getUploadPicture,getShowPicture ,getDeletePicture} from '../api/test'
+
 
 // import { getToken } from 'api/qiniu';
 
@@ -33,10 +34,15 @@ export default {
       pig:''
     }
   },
+    
+  
   components: {
 
   },
   methods: {
+        handleDelet1(){
+            console.log('shudei')
+        },
       handleDelete(it){
         var para={_id:it._id}
         getDeletePicture(para).then((res) => {
@@ -72,6 +78,7 @@ export default {
 
 
   },
+    
   mounted(){
 
     this.showPicture();
