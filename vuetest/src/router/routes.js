@@ -14,6 +14,10 @@ export const routes = [
     {
       path: '/dropzone',
         component: () => import('@/views/dropzone')
+    },
+    {
+      path: '/list',
+        component: () => import('@/views/list')
     }
 
 ];
